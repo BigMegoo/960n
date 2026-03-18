@@ -103,5 +103,43 @@
         window.log("An error occured during exploit: " + error, "red");
       }
     });
+    // Autorun system
+    var autoRunCheck = document.getElementById('autoRunCheck');
+    var countdownSpan = document.getElementById('countdown');
+    var jailbreakBtn = document.getElementById('jailbreakBtn');
+    // Checkbox control
+    autoRunCheck.addEventListener('change', function () {
+      autoRunEnabled = autoRunCheck.checked;
+      if (!autoRunEnabled) {
+        // Cancel countdown
+        clearInterval(countdownTimer);
+        countdownSpan.textContent = "-";
+      } else {
+        // Restart countdown
+        restartCountdown();
+      }
+    });
+    // Restart countdown
+    function restartCountdown() {
+      clearInterval(countdownTimer);
+      countdownValue = 5;
+      countdownSpan.textContent = countdownValue;
+      countdownTimer = setInterval(function () {
+        if (!autoRunEnabled) {
+          clearInterval(countdownTimer);
+          return;
+        }
+        countdownValue--;
+        countdownSpan.textContent = countdownValue;
+        if (countdownValue <= 0) {
+          clearInterval(countdownTimer);
+          jailbreakBtn.click();  // Call click function
+        }
+      }, 1000);
+    }
+    // Autostart countdown when page refresh
+    window.addEventListener('load', function () {
+      restartCountdown();
+    });
   </script>
 </html>
